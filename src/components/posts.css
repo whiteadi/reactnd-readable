@@ -1,0 +1,62 @@
+.posts p {
+    margin: 10px;
+    font-size: 1.2em;
+}
+.add-post {
+    position: fixed;
+    top: 100px;
+    right: 25px;
+}
+
+.add-post a {
+    display: block;
+    padding: 5px 10px;
+    font-size: 1em;
+    color: white;
+    border-radius: 20%;
+    background: #fcfafc;
+    box-shadow: 1px 1px 0.5px 0.8px rgba(0, 0, 0, .2);
+    border: 1px solid rgba(0,0,0,.2);
+    cursor: pointer;
+    text-decoration: none;
+}
+
+@media (max-width: 560px) {
+    .add-post a {
+        font-size: 1.5em;
+        border-radius: 50%;
+        padding: 5px 5px;
+        height:45px;
+        width: 45px;
+        text-align:center;
+    }
+
+    .add-post a span {
+        font-size: 0;
+    }
+}
+
+.tooltip {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+
+    /* Position the tooltip */
+    position: absolute;
+    right: 40px;
+    bottom: 0;
+    z-index: 1;
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+}
