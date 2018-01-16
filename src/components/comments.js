@@ -34,8 +34,8 @@ class Comments extends Component {
   render() {
     const {comments, doTheSort} = this.props;
     return (
-      <div className='comments'>
-        <div className='add-comment'>
+      <div>
+        <div>
           <h2>Add new comment</h2>
           <form id='newCommentForm' onSubmit={this.handleSubmit}>
             <label>

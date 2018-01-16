@@ -6,7 +6,7 @@ import './categories.css';
 
 import {capitalize} from '../utils/helper';
 
-const Categories = ({location, categories}) => (
+const Categories = ({categories}) => (
   <div>
     <nav className="nav">
       <span className="nav-header">

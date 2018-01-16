@@ -30,7 +30,7 @@ class PostDetails extends Component {
   render() {
     const {id, title, body, author, timestamp, voteScore} = this.props;
     return (
-      <div className='main-detail-post'>
+      <div>
         <Vote
           score={voteScore}
           id={id}

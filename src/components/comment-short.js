@@ -19,7 +19,7 @@ class CommentShort extends Component {
   render() {
     const {id, title, body, author, timestamp, voteScore} = this.props;
     return (
-      <div className='main-detail-post'>
+      <div>
         <Vote
           score={voteScore}
           id={id}
@@ -27,8 +27,8 @@ class CommentShort extends Component {
           onVoteDown={() => this.voteDownClick(id)}
         />
         <div className='comment-short'>
-          <h2 className='heading'>{title}</h2>
-          <h3 className='heading'>{body}</h3>
+          <h2>{title}</h2>
+          <h3>{body}</h3>
           <p className='comment-date'>by <b>{author}</b> at {formatDate(timestamp)}</p>
           <ConfirmAction delete={this.props.delete} id={id} />
         </div>
