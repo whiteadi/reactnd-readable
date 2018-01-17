@@ -17,12 +17,13 @@ const filterPostByCategory = (posts, category) => {
 };
 
 class Posts extends Component {
-  componentDidUpdate = () => {
-    filterPostByCategory(this.props.posts, this.props.category);
-  };
+  componentDidUpdate () {
+    console.log('crap')
+  }
   render() {
-    const {posts, doTheSort} = this.props;
-    if (posts.length === 0) {
+    const {posts, doTheSort, category} = this.props;
+    const sortedPosts = filterPostByCategory(posts, category);
+    if (sortedPosts.length === 0) {
       return (
         <div>
           <p><em>No posts yet, add one if you will...</em></p>
@@ -47,11 +48,11 @@ class Posts extends Component {
               </div>
             </Link>
           </div>
-          {posts.map(
+          {sortedPosts.map(
             post => <PostShort key={post.id} {...post} />
           )}
           <div>
-            <Sort items={posts} doTheSort={doTheSort}/>
+            <Sort items={sortedPosts} doTheSort={doTheSort}/>
           </div>
         </div>
       );
@@ -60,7 +61,8 @@ class Posts extends Component {
 }
 
 const mapStateToProps = (state, props) => ({
-  posts: filterPostByCategory(state.posts, props.category)
+  posts: state.posts,
+  categoy: props.category
 });
 
 export default connect(mapStateToProps, {doTheSort: actions.posts.doTheSort})(Posts);
