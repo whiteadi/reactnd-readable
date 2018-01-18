@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {Route, Switch, withRouter} from 'react-router-dom';
 import {connect} from 'react-redux';
-import {actions} from '../store';
 import Post from './post';
 import Posts from './posts';
 import PostDetails from './post-details';
@@ -13,7 +12,7 @@ class Main extends Component {
   }
 
   render() {
-    const {posts, doTheSort} = this.props;
+    const {posts} = this.props;
     return (
       <div className='content'>
         <Switch>

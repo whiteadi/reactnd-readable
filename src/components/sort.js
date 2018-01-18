@@ -53,7 +53,7 @@ const Sort = (props) => {
 
 Sort.propTypes = {
   doTheSort: PropTypes.func.isRequired,
-  items: PropTypes.array.isRequired,
+  items: PropTypes.array.isRequired
 };
 
 export default Sort;

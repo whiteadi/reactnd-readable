@@ -13,6 +13,7 @@ import _ from 'lodash';
 
 import {createPost, deletePost, editPost, getPosts, votePost, getPost} from '../utils/api';
 import {sortAsc, sortDesc,sortAscNum, sortDescNum} from '../utils/helper';
+import {getAllComments} from './comments.reducer'
 
 // ------------------------------------
 // Constants
@@ -34,10 +35,15 @@ export const DELETE_POST = 'readable/posts/DELETE_POST';
  */
 const getAllPosts = () => (dispatch) => {
   getPosts()
-    .then(posts => dispatch({
-      type: GET_POSTS,
-      posts
-    }));
+    .then(posts => {
+      posts.map(post =>
+        dispatch(getAllComments(post.id))
+      );
+      dispatch({
+        type: GET_POSTS,
+        posts
+      })
+    });
 };
 
 /**
@@ -144,7 +150,6 @@ export const actions = {
   changePost,
   doTheSort,
   deleteThisPost,
-  fetchPostById,
 };
 
 // ------------------------------------

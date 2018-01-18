@@ -35,7 +35,11 @@ class App extends Component {
   }
 }
 
-export default withRouter(connect(null,
+const mapStateToProps = (state) => ({
+  posts: state.posts
+});
+
+export default withRouter(connect(mapStateToProps,
   {
     getMeCategories: actions.categories.getAllCategories,
     getMeAllPosts: actions.posts.getAllPosts

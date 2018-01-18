@@ -54,7 +54,7 @@ class Comments extends Component {
           comment => <CommentShort key={comment.id} {...comment} />
         )}
         <div>
-          <Sort items={comments} doTheSort={doTheSort}/>
+          <Sort items={comments} doTheSort={doTheSort} />
         </div>
       </div>
     );
@@ -62,7 +62,7 @@ class Comments extends Component {
 }
 
 const mapStateToProps = (state, props) => ({
-  comments: state.comments.filter(comment => comment.parentId === props.postId),
+  comments: state.comments[props.postId]
 });
 
 export default withRouter(connect(mapStateToProps, {doTheSort: actions.comments.doTheSort, addComment: actions.comments.newComment})(Comments));

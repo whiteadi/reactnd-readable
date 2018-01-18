@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
 import PropTypes from 'prop-types';
-
+import FontIcon from 'material-ui/FontIcon';
 import {actions} from '../store';
 
 import Vote from './vote';
@@ -19,16 +19,8 @@ class PostDetails extends Component {
     this.props.voteDown(id);
   };
 
-  componentDidMount () {
-    this.props.getAllComments(this.props.id);
-  }
-
-  componentDidUpdate () {
-    this.props.getAllComments(this.props.id);
-  }
-
   render() {
-    const {id, title, body, author, timestamp, voteScore} = this.props;
+    const {id, title, body, author, timestamp, voteScore, commentCount} = this.props;
     return (
       <div>
         <Vote
@@ -45,6 +37,12 @@ class PostDetails extends Component {
           <div className='post-body'>
             <p>{body}</p>
           </div>
+          {(commentCount > 0) &&
+          <span className='post-commentsNo'>
+            <FontIcon className="material-icons"
+                      hoverColor="mediumspringgreen">comment</FontIcon> {commentCount} comments
+          </span>
+          }
           <Link to={`/posts/${id}/edit`}>{'Edit'}</Link>
           <ConfirmAction delete={this.props.delete} id={id} />
         </div>
@@ -57,6 +55,10 @@ class PostDetails extends Component {
 PostDetails.propTypes = {
   voteUp: PropTypes.func.isRequired,
   voteDown: PropTypes.func.isRequired,
+  delete: PropTypes.func.isRequired,
+  comments: PropTypes.array
 };
 
-export default connect(null, {voteUp: actions.posts.voteUp, voteDown: actions.posts.voteDown, getAllComments: actions.comments.getAllComments})(PostDetails);
+export default connect(null,
+  {voteUp: actions.posts.voteUp, voteDown: actions.posts.voteDown, delete: actions.posts.deleteThisPost,}
+  )(PostDetails);

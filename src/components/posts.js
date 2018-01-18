@@ -17,9 +17,6 @@ const filterPostByCategory = (posts, category) => {
 };
 
 class Posts extends Component {
-  componentDidUpdate () {
-    console.log('crap')
-  }
   render() {
     const {posts, doTheSort, category} = this.props;
     const sortedPosts = filterPostByCategory(posts, category);
@@ -61,8 +58,7 @@ class Posts extends Component {
 }
 
 const mapStateToProps = (state, props) => ({
-  posts: state.posts,
-  categoy: props.category
+  posts: filterPostByCategory(state.posts, props.category)
 });
 
 export default connect(mapStateToProps, {doTheSort: actions.posts.doTheSort})(Posts);

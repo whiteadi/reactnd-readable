@@ -9,8 +9,8 @@
  *   needs to listen for them, or if it is a published reusable library
  */
 
-import {createComment, getComments, voteComment, deleteComment} from '../utils/api';
-import {sortAsc, sortDesc,sortAscNum, sortDescNum} from '../utils/helper';
+import {createComment, deleteComment, getComments, voteComment} from '../utils/api';
+import {sortAsc, sortAscNum, sortDesc, sortDescNum} from '../utils/helper';
 
 import _ from 'lodash';
 
@@ -31,11 +31,12 @@ export const DELETE_COMMENT = 'readable/comments/DELETE_COMMENT';
 /**
  * Get all comments
  */
-const getAllComments = (postId) => (dispatch) => {
+export const getAllComments = (postId) => (dispatch) => {
   getComments(postId)
     .then(comments => dispatch({
       type: GET_COMMENTS,
-      comments
+      comments,
+      postId
     }));
 };
 
@@ -44,10 +45,7 @@ const getAllComments = (postId) => (dispatch) => {
  */
 const voteUp = (id) => (dispatch) => {
   voteComment(id, 'upVote')
-    .then(comment => dispatch({
-      type: UPVOTE_COMMENTS,
-      comment
-    }));
+    .then(comment => dispatch(getAllComments(comment.parentId)));
 };
 
 /**
@@ -55,10 +53,7 @@ const voteUp = (id) => (dispatch) => {
  */
 const voteDown = (id) => (dispatch) => {
   voteComment(id, 'downVote')
-    .then(comment => dispatch({
-      type: DOWNVOTE_COMMENTS,
-      comment
-    }));
+    .then(comment => dispatch(getAllComments(comment.parentId)));
 };
 
 /**
@@ -75,12 +70,9 @@ const newComment = (data) => (dispatch) => {
 /**
  * Delete a comment
  */
-const deleteThisComment = (id) => (dispatch) => {
+const deleteThisComment = (id, postId) => (dispatch) => {
   deleteComment(id)
-    .then(() => dispatch({
-      type: DELETE_COMMENT,
-      id
-    }));
+    .then(() => dispatch(getAllComments(postId)));
 };
 
 /**
@@ -89,8 +81,9 @@ const deleteThisComment = (id) => (dispatch) => {
  * @param sortBy
  * @returns {function(*)}
  */
-export const doTheSort = (comments, sortBy) => (dispatch) => {
+const doTheSort = (comments, sortBy) => (dispatch) => {
   let sortedComments = [];
+  const postId = comments[0].parentId;
   switch (sortBy) {
     case 'date_asc':
       sortedComments = sortAsc(comments, 'timestamp');
@@ -110,6 +103,7 @@ export const doTheSort = (comments, sortBy) => (dispatch) => {
   dispatch({
     type: SORT_COMMENTS,
     comments: sortedComments,
+    postId
   });
 };
 
@@ -117,7 +111,6 @@ export const doTheSort = (comments, sortBy) => (dispatch) => {
  * export the actions
  */
 export const actions = {
-  getAllComments,
   voteUp,
   voteDown,
   newComment,
@@ -129,27 +122,21 @@ export const actions = {
 // Action Handlers
 // ------------------------------------
 const ACTION_HANDLERS = {
-  [GET_COMMENTS]: (state, action) => action.comments,
-  [UPVOTE_COMMENTS]: (state, action) => state.map(comment => {
-    if (comment.id === action.comment.id) {
-      return action.comment;
-    } else {
-      return comment;
-    }
-  }),
-  [DOWNVOTE_COMMENTS]: (state, action) => state.map(comment => {
-    if (comment.id === action.comment.id) {
-      return action.comment;
-    } else {
-      return comment;
-    }
-  }),
-  [CREATE_COMMENT]: (state, action) => [
-    ...state,
-    action.comment
-  ],
-  [DELETE_COMMENT]: (state, action) => _.filter(state, comment => comment.id !== action.id),
-  [SORT_COMMENTS]: (state, action) => action.comments,
+  [GET_COMMENTS]: (state, action) => {
+    const newState = state;
+    newState[action.postId] = action.comments;
+    return newState;
+  },
+  [CREATE_COMMENT]: (state, action) => {
+    const newState = state;
+    newState[action.comment.parentId].push(action.comment);
+    return newState;
+  },
+  [SORT_COMMENTS]: (state, action) => {
+    const newState = state;
+    newState[action.postId] = action.comments;
+    return newState;
+  },
 };
 
 // ------------------------------------

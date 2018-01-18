@@ -10,3 +10,19 @@
     padding: 15px;
     margin: 5px 0;
 }
+
+.post-commentsNo {
+    padding: 5px;
+    font-size: 1.2em;
+}
+
+.post-edit {
+    padding: 5px;
+    font-size: 1.2em;
+    text-decoration: underline;
+}
+
+.heading {
+    padding: 5px;
+    text-decoration: underline;
+}
