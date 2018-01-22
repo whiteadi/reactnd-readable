@@ -6,6 +6,7 @@ import Sort from './sort';
 import PostShort from './short';
 import './posts.css';
 import {connect} from "react-redux";
+import { bindActionCreators } from 'redux'
 import {actions} from "../store";
 
 const filterPostByCategory = (posts, category) => {
@@ -49,7 +50,7 @@ class Posts extends Component {
             post => <PostShort key={post.id} {...post} />
           )}
           <div>
-            <Sort items={sortedPosts} doTheSort={doTheSort}/>
+            <Sort items={posts} doTheSort={doTheSort}/>
           </div>
         </div>
       );
@@ -58,7 +59,14 @@ class Posts extends Component {
 }
 
 const mapStateToProps = (state, props) => ({
-  posts: filterPostByCategory(state.posts, props.category)
+  posts: state.posts,
+  category: props.category
 });
 
-export default connect(mapStateToProps, {doTheSort: actions.posts.doTheSort})(Posts);
+const mapDispatchToProps = dispatch => (
+  {
+    doTheSort: bindActionCreators(actions.posts.doTheSort, dispatch)
+  }
+);
+
+export default connect(mapStateToProps, mapDispatchToProps)(Posts);

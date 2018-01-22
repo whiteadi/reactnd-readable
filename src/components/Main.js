@@ -18,10 +18,9 @@ class Main extends Component {
         <Switch>
           <Route exact
                  path='/'
-                 render={() => (
-                   <Posts/>
-                 )}
-          />
+          >
+            <Posts/>
+          </Route>
           <Route exact
                  path='/categories/:name'
                  render={({match}) => (

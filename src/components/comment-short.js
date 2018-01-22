@@ -10,10 +10,10 @@ import './comment-short.css';
 
 class CommentShort extends Component {
   voteUpClick = (id) => {
-    this.props.voteUp(id);
+    this.props.voteUp(id, this.props.parentId);
   };
   voteDownClick = (id) => {
-    this.props.voteDown(id);
+    this.props.voteDown(id, this.props.parentId);
   };
 
   render() {

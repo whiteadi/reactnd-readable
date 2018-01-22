@@ -44,7 +44,7 @@ class PostDetails extends Component {
           </span>
           }
           <Link to={`/posts/${id}/edit`}>{'Edit'}</Link>
-          <ConfirmAction delete={this.props.delete} id={id} />
+          <ConfirmAction delete={this.props.delete} id={id} postId={id}/>
         </div>
         <Comments postId={id} />
       </div>

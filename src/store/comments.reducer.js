@@ -12,48 +12,41 @@
 import {createComment, deleteComment, getComments, voteComment} from '../utils/api';
 import {sortAsc, sortAscNum, sortDesc, sortDescNum} from '../utils/helper';
 
-import _ from 'lodash';
-
 // ------------------------------------
 // Constants
 // ------------------------------------
 export const GET_COMMENTS = 'readable/comments/GET_COMMENTS';
-export const UPVOTE_COMMENTS = 'readable/comments/UPVOTE_COMMENTS';
-export const DOWNVOTE_COMMENTS = 'sm-readable/comments/DOWNVOTE_COMMENTS';
 export const CREATE_COMMENT = 'readable/comments/CREATE_COMMENT';
-export const SORT_COMMENTS = 'readable/comments/SORT_COMMENTS';
-export const DELETE_COMMENT = 'readable/comments/DELETE_COMMENT';
 
 // ------------------------------------
 // Actions
 // ------------------------------------
 
 /**
- * Get all comments
+ * Get all comments 4 a post
  */
-export const getAllComments = (postId) => (dispatch) => {
+const getAllComments = (postId) => (dispatch) => {
   getComments(postId)
     .then(comments => dispatch({
       type: GET_COMMENTS,
-      comments,
-      postId
+      comments
     }));
 };
 
 /**
  * Upvote on a comment
  */
-const voteUp = (id) => (dispatch) => {
+const voteUp = (id, postId) => (dispatch) => {
   voteComment(id, 'upVote')
-    .then(comment => dispatch(getAllComments(comment.parentId)));
+    .then(comment => dispatch(getAllComments(postId)));
 };
 
 /**
  * Downvote on a comment
  */
-const voteDown = (id) => (dispatch) => {
+const voteDown = (id, postId) => (dispatch) => {
   voteComment(id, 'downVote')
-    .then(comment => dispatch(getAllComments(comment.parentId)));
+    .then(comment => dispatch(getAllComments(postId)));
 };
 
 /**
@@ -83,7 +76,6 @@ const deleteThisComment = (id, postId) => (dispatch) => {
  */
 const doTheSort = (comments, sortBy) => (dispatch) => {
   let sortedComments = [];
-  const postId = comments[0].parentId;
   switch (sortBy) {
     case 'date_asc':
       sortedComments = sortAsc(comments, 'timestamp');
@@ -101,9 +93,8 @@ const doTheSort = (comments, sortBy) => (dispatch) => {
       break;
   }
   dispatch({
-    type: SORT_COMMENTS,
-    comments: sortedComments,
-    postId
+    type: GET_COMMENTS,
+    comments: sortedComments
   });
 };
 
@@ -115,28 +106,19 @@ export const actions = {
   voteDown,
   newComment,
   doTheSort,
-  deleteThisComment
+  deleteThisComment,
+  getAllComments
 };
 
 // ------------------------------------
 // Action Handlers
 // ------------------------------------
 const ACTION_HANDLERS = {
-  [GET_COMMENTS]: (state, action) => {
-    const newState = state;
-    newState[action.postId] = action.comments;
-    return newState;
-  },
-  [CREATE_COMMENT]: (state, action) => {
-    const newState = state;
-    newState[action.comment.parentId].push(action.comment);
-    return newState;
-  },
-  [SORT_COMMENTS]: (state, action) => {
-    const newState = state;
-    newState[action.postId] = action.comments;
-    return newState;
-  },
+  [GET_COMMENTS]: (state, action) => action.comments,
+  [CREATE_COMMENT]: (state, action) => [
+    ...state,
+    action.comment
+  ]
 };
 
 // ------------------------------------

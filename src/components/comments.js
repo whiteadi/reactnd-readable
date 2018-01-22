@@ -24,12 +24,17 @@ class Comments extends Component {
       body: this.commentBody.value,
     };
     this.props.addComment(newComment);
+    this.clearFields();
     event.preventDefault();
   }
 
   clearFields = () => {
     document.getElementById("newCommentForm").reset();
   };
+
+  componentDidMount() {
+    this.props.getAllComments(this.props.postId);
+  }
 
   render() {
     const {comments, doTheSort} = this.props;
@@ -50,7 +55,7 @@ class Comments extends Component {
             <input type="button" value="Clear" onClick={this.clearFields} />
           </form>
         </div>
-        {comments.map(
+        {comments && comments.map(
           comment => <CommentShort key={comment.id} {...comment} />
         )}
         <div>
@@ -62,7 +67,7 @@ class Comments extends Component {
 }
 
 const mapStateToProps = (state, props) => ({
-  comments: state.comments[props.postId]
+  comments: state.comments,
 });
 
-export default withRouter(connect(mapStateToProps, {doTheSort: actions.comments.doTheSort, addComment: actions.comments.newComment})(Comments));
+export default withRouter(connect(mapStateToProps, {doTheSort: actions.comments.doTheSort, addComment: actions.comments.newComment, getAllComments: actions.comments.getAllComments})(Comments));

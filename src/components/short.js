@@ -41,7 +41,7 @@ class PostShort extends Component {
           </span>
           }
           <Link className='post-edit' to={`/posts/${id}/edit`}>{'Edit'}</Link>
-          <ConfirmAction delete={this.props.delete} id={id} />
+          <ConfirmAction delete={this.props.delete} postId={id} id={id} />
         </div>
       </div>
     );
