@@ -30,6 +30,9 @@ in order to be able to invoke the actions from a component
 Tried different ways to do same thing just to play with it, for example 
 getting the props and actions to a component.
 
+###Inspiration###
+Because I have no css skills:
+https://github.com/jansvigar/reactnd-project-readable
 
 
 
