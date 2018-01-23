@@ -20,7 +20,7 @@ class PostShort extends Component {
   };
 
   render() {
-    const {id, title, author, timestamp, voteScore, commentCount} = this.props;
+    const {id, title, author, timestamp, voteScore, commentCount, category} = this.props;
     return (
       <div className='main-detail-post'>
         <Vote
@@ -30,18 +30,19 @@ class PostShort extends Component {
           onVoteDown={() => this.handleVoteDownClick(id)}
         />
         <div className='post-short'>
-          <Link to={`/posts/${id}`}>
+          <Link to={`/${category}/${id}`}>
             <h2 className='heading'>{title}</h2>
           </Link>
           <p className='post-date'>by <b>{author}</b> at {formatDate(timestamp)}</p>
           {(commentCount > 0) &&
-            <span className='post-commentsNo'>
-            <FontIcon className="material-icons"
-                                  hoverColor="mediumspringgreen">comment</FontIcon> {commentCount} comments
+          <span className='post-commentsNo'>
+            <FontIcon className="material-icons" hoverColor="mediumspringgreen">
+              comment
+            </FontIcon> {commentCount} comments
           </span>
           }
           <Link className='post-edit' to={`/posts/${id}/edit`}>{'Edit'}</Link>
-          <ConfirmAction delete={this.props.delete} postId={id} id={id} />
+          <ConfirmAction delete={this.props.delete} postId={id} id={id}/>
         </div>
       </div>
     );

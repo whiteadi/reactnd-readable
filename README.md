@@ -27,6 +27,9 @@ in order to be able to invoke the actions from a component
 1. confirm modal dialog for deleting stuff https://github.com/gregthebusker/react-confirm-bootstrap
 1. uuid - generate unique ids https://www.npmjs.com/package/uuid
 
+Tried different ways to do same thing just to play with it, for example 
+getting the props and actions to a component.
+
 
 
 

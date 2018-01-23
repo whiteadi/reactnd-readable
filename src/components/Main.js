@@ -22,7 +22,7 @@ class Main extends Component {
             <Posts/>
           </Route>
           <Route exact
-                 path='/categories/:name'
+                 path='/:name'
                  render={({match}) => (
                    <Posts category={match.params.name}/>
                  )}
@@ -38,7 +38,7 @@ class Main extends Component {
             )}
           />
           <Route exact
-                 path='/posts/:id'
+                 path='/:category/:id'
                  render={({match}) => (
                    <PostDetails {...this.getPostById(posts, match.params.id)} />
                  )}

@@ -13,7 +13,7 @@ const Categories = ({categories}) => (
         <h4>Categories</h4>
       </span>
       {categories.length && categories.map((category, index) => (
-        <NavLink key={index} activeClassName="active" to={`/categories/${category.name}`}>
+        <NavLink key={index} activeClassName="active" to={`/${category.name}`}>
           {capitalize(category.name)}
         </NavLink>
       ))}

@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {withRouter} from 'react-router-dom';
 import {connect} from "react-redux";
 import { v4 } from 'uuid';
+import _ from 'lodash';
 
 import Sort from './sort';
 import CommentShort from './comment-short';
@@ -16,15 +17,17 @@ class Comments extends Component {
   }
 
   handleSubmit(event) {
-    const newComment = {
-      id: v4(),
-      parentId: this.props.postId,
-      timestamp: Date.now(),
-      author: this.author.value,
-      body: this.commentBody.value,
-    };
-    this.props.addComment(newComment);
-    this.clearFields();
+    if (!(_.isEmpty(this.author.value) && _.isEmpty(this.commentBody.value))) {
+      const newComment = {
+        id: v4(),
+        parentId: this.props.postId,
+        timestamp: Date.now(),
+        author: this.author.value,
+        body: this.commentBody.value,
+      };
+      this.props.addComment(newComment);
+      this.clearFields();
+    }
     event.preventDefault();
   }
 
