@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 class ConfirmAction extends Component {
   onConfirm = () => {
     this.props.delete(this.props.id, this.props.postId);
+    this.props.refreshParent();
   };
 
   render() {
@@ -24,6 +25,7 @@ ConfirmAction.propTypes = {
   delete: PropTypes.func.isRequired,
   id: PropTypes.string.isRequired,
   postId: PropTypes.string.isRequired,
+  refreshParent: PropTypes.func
 };
 
 export default ConfirmAction;

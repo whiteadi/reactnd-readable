@@ -12,7 +12,7 @@
 import _ from 'lodash';
 
 import {createPost, deletePost, editPost, getPosts, votePost} from '../utils/api';
-import {sortAsc, sortDesc,sortAscNum, sortDescNum} from '../utils/helper';
+import {sortAsc, sortAscNum, sortDesc, sortDescNum} from '../utils/helper';
 
 // ------------------------------------
 // Constants
@@ -123,7 +123,10 @@ export const doTheSort = (posts, sortBy) => (dispatch) => {
   }
   dispatch({
     type: SORT_POST,
-    posts: sortedPosts
+    posts: sortedPosts.map(post => {
+      post.random = Math.random();
+      return post;
+    })
   });
 };
 

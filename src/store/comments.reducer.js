@@ -94,7 +94,10 @@ const doTheSort = (comments, sortBy) => (dispatch) => {
   }
   dispatch({
     type: GET_COMMENTS,
-    comments: sortedComments
+    comments: sortedComments.map(comment => {
+      comment.random = Math.random();
+      return comment;
+    })
   });
 };
 

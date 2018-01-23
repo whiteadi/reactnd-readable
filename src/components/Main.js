@@ -40,7 +40,7 @@ class Main extends Component {
           <Route exact
                  path='/:category/:id'
                  render={({match}) => (
-                   <PostDetails {...this.getPostById(posts, match.params.id)} />
+                   <PostDetails id={match.params.id} />
                  )}
           />
           <Route component={NothingHere}/>

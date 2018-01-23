@@ -30,7 +30,7 @@ class CommentShort extends Component {
           <h2>{title}</h2>
           <h3>{body}</h3>
           <p className='comment-date'>by <b>{author}</b> at {formatDate(timestamp)}</p>
-          <ConfirmAction delete={this.props.delete} id={id} postId={parentId} />
+          <ConfirmAction delete={this.props.delete} id={id} postId={parentId} refreshParent={this.props.getMeAllPosts}/>
         </div>
       </div>
     );
@@ -43,4 +43,10 @@ CommentShort.propTypes = {
   delete: PropTypes.func.isRequired,
 };
 
-export default connect(null, {voteUp: actions.comments.voteUp, voteDown: actions.comments.voteDown, delete: actions.comments.deleteThisComment})(CommentShort);
+export default connect(null,
+  {
+    voteUp: actions.comments.voteUp,
+    voteDown: actions.comments.voteDown,
+    delete: actions.comments.deleteThisComment,
+    getMeAllPosts: actions.posts.getAllPosts
+  })(CommentShort);

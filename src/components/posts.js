@@ -53,7 +53,7 @@ class Posts extends Component {
             </Link>
           </div>
           {sortedPosts.map(
-            post => <PostShort key={post.id} {...post} category={category}/>
+            post => <PostShort key={post.id} id={post.id} category={category}/>
           )}
           <div>
             <Sort items={posts} doTheSort={doTheSort}/>

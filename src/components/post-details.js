@@ -18,35 +18,38 @@ class PostDetails extends Component {
   handleVoteDownClick = (id) => {
     this.props.voteDown(id);
   };
+  getPosts = () => {
+    this.props.getMeAllPosts();
+  };
 
   render() {
-    const {id, title, body, author, timestamp, voteScore, commentCount} = this.props;
+    const post = this.props.post;
     return (
       <div>
         <Vote
-          score={voteScore}
-          id={id}
-          onVoteUp={() => this.handleVoteUpClick(id)}
-          onVoteDown={() => this.handleVoteDownClick(id)}
+          score={post.voteScore}
+          id={post.id}
+          onVoteUp={() => this.handleVoteUpClick(post.id)}
+          onVoteDown={() => this.handleVoteDownClick(post.id)}
         />
         <div className='post-title'>
-          <Link to={`/posts/${id}`}>
-            <h2 className='heading'>{title}</h2>
+          <Link to={`/posts/${post.id}`}>
+            <h2 className='heading'>{post.title}</h2>
           </Link>
-          <p>by <b>{author}</b> at {formatDate(timestamp)}</p>
+          <p>by <b>{post.author}</b> at {formatDate(post.timestamp)}</p>
           <div className='post-body'>
-            <p>{body}</p>
+            <p>{post.body}</p>
           </div>
-          {(commentCount > 0) &&
           <span className='post-commentsNo'>
-            <FontIcon className="material-icons"
-                      hoverColor="mediumspringgreen">comment</FontIcon> {commentCount} comments
+            <FontIcon className="material-icons" hoverColor="mediumspringgreen">
+              comment
+            </FontIcon>
+            {post.commentCount} comments
           </span>
-          }
-          <Link to={`/posts/${id}/edit`}>{'Edit'}</Link>
-          <ConfirmAction delete={this.props.delete} id={id} postId={id}/>
+          <Link to={`/posts/${post.id}/edit`}>{'Edit'}</Link>
+          <ConfirmAction delete={this.props.delete} id={post.id} postId={post.id}/>
         </div>
-        <Comments postId={id} />
+        <Comments postId={post.id} refreshPosts={this.getPosts} />
       </div>
     );
   }
@@ -59,6 +62,15 @@ PostDetails.propTypes = {
   comments: PropTypes.array
 };
 
-export default connect(null,
-  {voteUp: actions.posts.voteUp, voteDown: actions.posts.voteDown, delete: actions.posts.deleteThisPost,}
-  )(PostDetails);
+const mapStateToProps = (state, props) => ({
+  post: state.posts.filter(post => post.id === props.id)[0]
+});
+
+export default connect(mapStateToProps,
+  {
+    voteUp: actions.posts.voteUp,
+    voteDown: actions.posts.voteDown,
+    delete: actions.posts.deleteThisPost,
+    getMeAllPosts: actions.posts.getAllPosts
+  }
+)(PostDetails);

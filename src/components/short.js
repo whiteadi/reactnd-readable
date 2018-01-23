@@ -20,29 +20,31 @@ class PostShort extends Component {
   };
 
   render() {
-    const {id, title, author, timestamp, voteScore, commentCount, category} = this.props;
+    const post = this.props.post;
+    let category = this.props.category;
+    if (typeof category === 'undefined') {
+      category = 'all'
+    }
     return (
       <div className='main-detail-post'>
         <Vote
-          score={voteScore}
-          id={id}
-          onVoteUp={() => this.handleVoteUpClick(id)}
-          onVoteDown={() => this.handleVoteDownClick(id)}
+          score={post.voteScore}
+          id={post.id}
+          onVoteUp={() => this.handleVoteUpClick(post.id)}
+          onVoteDown={() => this.handleVoteDownClick(post.id)}
         />
         <div className='post-short'>
-          <Link to={`/${category}/${id}`}>
-            <h2 className='heading'>{title}</h2>
+          <Link to={`/${category}/${post.id}`}>
+            <h2 className='heading'>{post.title}</h2>
           </Link>
-          <p className='post-date'>by <b>{author}</b> at {formatDate(timestamp)}</p>
-          {(commentCount > 0) &&
+          <p className='post-date'>by <b>{post.author}</b> at {formatDate(post.timestamp)}</p>
           <span className='post-commentsNo'>
             <FontIcon className="material-icons" hoverColor="mediumspringgreen">
               comment
-            </FontIcon> {commentCount} comments
+            </FontIcon> {post.commentCount} comments
           </span>
-          }
-          <Link className='post-edit' to={`/posts/${id}/edit`}>{'Edit'}</Link>
-          <ConfirmAction delete={this.props.delete} postId={id} id={id}/>
+          <Link className='post-edit' to={`/posts/${post.id}/edit`}>{'Edit'}</Link>
+          <ConfirmAction delete={this.props.delete} postId={post.id} id={post.id} refreshParent={this.props.getMeAllPosts}/>
         </div>
       </div>
     );
@@ -53,12 +55,18 @@ PostShort.propTypes = {
   voteUp: PropTypes.func.isRequired,
   voteDown: PropTypes.func.isRequired,
   delete: PropTypes.func.isRequired,
-  comments: PropTypes.array
+  comments: PropTypes.array,
+  id: PropTypes.string
 };
 
-export default connect(null,
+const mapStateToProps = (state, props) => ({
+  post: state.posts.filter(post => post.id === props.id)[0]
+});
+
+export default connect(mapStateToProps,
   {
     voteUp: actions.posts.voteUp,
     voteDown: actions.posts.voteDown,
-    delete: actions.posts.deleteThisPost
+    delete: actions.posts.deleteThisPost,
+    getMeAllPosts: actions.posts.getAllPosts
   })(PostShort);
