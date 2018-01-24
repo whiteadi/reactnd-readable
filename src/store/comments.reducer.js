@@ -9,7 +9,7 @@
  *   needs to listen for them, or if it is a published reusable library
  */
 
-import {createComment, deleteComment, getComments, voteComment} from '../utils/api';
+import {createComment, deleteComment, getComments, voteComment, editComment} from '../utils/api';
 import {sortAsc, sortAscNum, sortDesc, sortDescNum} from '../utils/helper';
 
 // ------------------------------------
@@ -69,6 +69,14 @@ const deleteThisComment = (id, postId) => (dispatch) => {
 };
 
 /**
+ * Edit a comment
+ */
+const editTheComment = (id, body, postId) => (dispatch) => {
+  editComment(id, body)
+    .then(() => dispatch(getAllComments(postId)));
+};
+
+/**
  *
  * @param comments
  * @param sortBy
@@ -110,7 +118,8 @@ export const actions = {
   newComment,
   doTheSort,
   deleteThisComment,
-  getAllComments
+  getAllComments,
+  editTheComment
 };
 
 // ------------------------------------

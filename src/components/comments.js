@@ -13,6 +13,7 @@ import './comments.css';
 class Comments extends Component {
   clearFields = () => {
     document.getElementById("newCommentForm").reset();
+    this.commId.value = '';
   };
 
   constructor(props) {
@@ -21,20 +22,34 @@ class Comments extends Component {
   }
 
   handleSubmit(event) {
-    if (!(_.isEmpty(this.author.value) && _.isEmpty(this.commentBody.value))) {
-      const newComment = {
-        id: v4(),
-        parentId: this.props.postId,
-        timestamp: Date.now(),
-        author: this.author.value,
-        body: this.commentBody.value,
-      };
-      this.props.addComment(newComment);
+    if (_.isEmpty(this.commId.value)) {
+      if (!(_.isEmpty(this.author.value) && _.isEmpty(this.commentBody.value))) {
+        const newComment = {
+          id: v4(),
+          parentId: this.props.postId,
+          timestamp: Date.now(),
+          author: this.author.value,
+          body: this.commentBody.value,
+        };
+        this.props.addComment(newComment);
+        this.props.refreshPosts();
+        this.clearFields();
+      }
+    } else {
+      this.props.editTheComment(this.commId.value, this.commentBody.value, this.props.postId);
       this.props.refreshPosts();
       this.clearFields();
     }
     event.preventDefault();
   }
+
+  editComment = (commId, body, author) => {
+    this.commId.value = commId;
+    this.commentBody.value = body;
+    this.author.value = author;
+    this.author.disabled = true;
+    document.body.scrollTop = document.documentElement.scrollTop = 0;
+  };
 
   componentDidMount() {
     this.props.getAllComments(this.props.postId);
@@ -47,6 +62,7 @@ class Comments extends Component {
         <div>
           <h2>Add new comment</h2>
           <form id='newCommentForm' onSubmit={this.handleSubmit}>
+            <input ref={(input) => this.commId = input} type="hidden"/>
             <label>
               Author:
               <input type="text" ref={(input) => this.author = input}/>
@@ -60,7 +76,7 @@ class Comments extends Component {
           </form>
         </div>
         {comments && comments.map(
-          comment => <CommentShort key={comment.id} {...comment} />
+          comment => <CommentShort key={comment.id} {...comment} editComment={this.editComment} />
         )}
         <div>
           <Sort items={comments} doTheSort={doTheSort}/>
@@ -78,6 +94,7 @@ export default withRouter(connect(mapStateToProps,
   {
     doTheSort: actions.comments.doTheSort,
     addComment: actions.comments.newComment,
-    getAllComments: actions.comments.getAllComments
+    getAllComments: actions.comments.getAllComments,
+    editTheComment: actions.comments.editTheComment
   }
 )(Comments));

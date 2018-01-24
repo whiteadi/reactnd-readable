@@ -35,6 +35,7 @@ class CommentShort extends Component {
           <h3>{body}</h3>
           <p className='comment-date'>by <b>{author}</b> at {formatDate(timestamp)}</p>
           <ConfirmAction delete={this.props.delete} id={id} postId={parentId} refreshParent={this.props.getMeAllPosts} goBack={this.doNothing}/>
+          <input type="button" value="Edit" onClick={() => this.props.editComment(id, body, author)}/>
         </div>
       </div>
     );
@@ -45,6 +46,8 @@ CommentShort.propTypes = {
   voteUp: PropTypes.func.isRequired,
   voteDown: PropTypes.func.isRequired,
   delete: PropTypes.func.isRequired,
+  getMeAllPosts: PropTypes.func.isRequired,
+  editComment: PropTypes.func.isRequired,
 };
 
 export default connect(null,
