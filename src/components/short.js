@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {Link} from 'react-router-dom';
+import {Link, withRouter} from 'react-router-dom';
 import PropTypes from 'prop-types';
 import ConfirmAction from './ConfirmAction';
 import FontIcon from 'material-ui/FontIcon';
@@ -44,7 +44,7 @@ class PostShort extends Component {
             </FontIcon> {post.commentCount} comments
           </span>
           <Link className='post-edit' to={`/posts/${post.id}/edit`}>{'Edit'}</Link>
-          <ConfirmAction delete={this.props.delete} postId={post.id} id={post.id} refreshParent={this.props.getMeAllPosts}/>
+          <ConfirmAction delete={this.props.delete} postId={post.id} id={post.id} refreshParent={this.props.getMeAllPosts} goBack={this.props.history.goBack}/>
         </div>
       </div>
     );
@@ -63,10 +63,10 @@ const mapStateToProps = (state, props) => ({
   post: state.posts.filter(post => post.id === props.id)[0]
 });
 
-export default connect(mapStateToProps,
+export default withRouter(connect(mapStateToProps,
   {
     voteUp: actions.posts.voteUp,
     voteDown: actions.posts.voteDown,
     delete: actions.posts.deleteThisPost,
     getMeAllPosts: actions.posts.getAllPosts
-  })(PostShort);
+  })(PostShort));

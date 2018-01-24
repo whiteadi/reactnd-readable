@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {Link} from 'react-router-dom';
+import {Link, withRouter} from 'react-router-dom';
 import PropTypes from 'prop-types';
 import FontIcon from 'material-ui/FontIcon';
 import {actions} from '../store';
@@ -47,9 +47,9 @@ class PostDetails extends Component {
             {post.commentCount} comments
           </span>
           <Link to={`/posts/${post.id}/edit`}>{'Edit'}</Link>
-          <ConfirmAction delete={this.props.delete} id={post.id} postId={post.id}/>
+          <ConfirmAction delete={this.props.delete} id={post.id} postId={post.id} refreshParent={this.getPosts} goBack={this.props.history.goBack}/>
         </div>
-        <Comments postId={post.id} refreshPosts={this.getPosts} />
+        <Comments postId={post.id} refreshPosts={this.getPosts}/>
       </div>
     );
   }
@@ -66,11 +66,11 @@ const mapStateToProps = (state, props) => ({
   post: state.posts.filter(post => post.id === props.id)[0]
 });
 
-export default connect(mapStateToProps,
+export default withRouter(connect(mapStateToProps,
   {
     voteUp: actions.posts.voteUp,
     voteDown: actions.posts.voteDown,
     delete: actions.posts.deleteThisPost,
     getMeAllPosts: actions.posts.getAllPosts
   }
-)(PostDetails);
+)(PostDetails));

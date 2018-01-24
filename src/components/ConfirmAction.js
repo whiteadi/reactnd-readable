@@ -6,6 +6,7 @@ class ConfirmAction extends Component {
   onConfirm = () => {
     this.props.delete(this.props.id, this.props.postId);
     this.props.refreshParent();
+    this.props.goBack();
   };
 
   render() {

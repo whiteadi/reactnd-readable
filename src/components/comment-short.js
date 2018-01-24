@@ -16,6 +16,10 @@ class CommentShort extends Component {
     this.props.voteDown(id, this.props.parentId);
   };
 
+  doNothing = () => {
+    // nothing, for now
+  };
+
   render() {
     const {id, title, body, author, timestamp, voteScore, parentId} = this.props;
     return (
@@ -30,7 +34,7 @@ class CommentShort extends Component {
           <h2>{title}</h2>
           <h3>{body}</h3>
           <p className='comment-date'>by <b>{author}</b> at {formatDate(timestamp)}</p>
-          <ConfirmAction delete={this.props.delete} id={id} postId={parentId} refreshParent={this.props.getMeAllPosts}/>
+          <ConfirmAction delete={this.props.delete} id={id} postId={parentId} refreshParent={this.props.getMeAllPosts} goBack={this.doNothing}/>
         </div>
       </div>
     );
