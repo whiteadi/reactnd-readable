@@ -22,6 +22,11 @@ class Main extends Component {
             <Posts/>
           </Route>
           <Route exact
+                 path='/all'
+          >
+            <Posts/>
+          </Route>
+          <Route exact
                  path='/:name'
                  render={({match}) => (
                    <Posts category={match.params.name}/>

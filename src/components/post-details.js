@@ -24,6 +24,10 @@ class PostDetails extends Component {
 
   render() {
     const post = this.props.post;
+    if (typeof post === 'undefined') {
+      this.props.history.push(`/${this.props.match.params.category}`);
+      return '';
+    }
     return (
       <div>
         <Vote
