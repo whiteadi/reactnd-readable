@@ -14,6 +14,7 @@ class Comments extends Component {
   clearFields = () => {
     document.getElementById("newCommentForm").reset();
     this.commId.value = '';
+    this.author.disabled = false;
   };
 
   constructor(props) {
